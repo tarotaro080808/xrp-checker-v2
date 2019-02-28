@@ -35,7 +35,8 @@ module.exports = {
   plugins: [
     { src: '~/plugins/blackDashboard' },
     { src: '~/plugins/globalComponents' },
-    { src: '~/plugins/globalDirectives' }
+    { src: '~/plugins/globalDirectives' },
+    { src: '~/plugins/veeValidate' }
   ],
 
   /*
