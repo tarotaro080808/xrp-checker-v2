@@ -1,9 +1,10 @@
 <template>
-  <top-page />
+  <top-page/>
 </template>
 
 <script>
-const TopPage = () => import(/* webpackChunkName: "toppage" */"@/components/pages/TopPage.vue");
+const TopPage = () =>
+  import(/* webpackChunkName: "toppage" */ '@/components/pages/TopPage.vue')
 
 export default {
   head() {

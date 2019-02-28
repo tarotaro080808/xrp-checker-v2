@@ -151,6 +151,7 @@ import * as chartConfigs from '@/components/atoms/template/Charts/config'
 import TaskList from '@/components/organisms/TaskList'
 import UserTable from '@/components/organisms/UserTable'
 import config from '@/components/atoms/template/config'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -257,7 +258,13 @@ export default {
     },
     bigLineChartCategories() {
       return ['Accounts', 'Purchases', 'Sessions']
-    }
+    },
+
+    ...mapGetters('rippled', [
+      'totalBalance',
+      'isRippledWsLoading',
+      'yourWallet'
+    ])
   },
   methods: {
     initBigChart(index) {
@@ -297,10 +304,36 @@ export default {
       this.$refs.bigChart.updateGradients(chartData)
       this.bigLineChart.chartData = chartData
       this.bigLineChart.activeIndex = index
-    }
+    },
+
+    ...mapActions('rippled', ['connectRippleClient'])
   },
-  mounted() {
+  async mounted() {
     this.initBigChart(0)
+
+    console.time('start')
+    const walletAddresses = [
+      {
+        label: 'ウォレットA',
+        address: 'raz9XPARSJTZtGdQbJSiuFS6RSHg8i8fuF',
+        value: null,
+        isAddress: true
+      },
+      {
+        label: 'ウォレットB',
+        address: 'rN5wo76mqvdNvShMbi5zwsnHWm2KVaqW4m',
+        value: null,
+        isAddress: true
+      },
+      {
+        label: '取引所A',
+        address: '',
+        value: 100,
+        isAddress: false
+      }
+    ]
+    await this.connectRippleClient({ walletAddresses })
+    console.timeEnd('start')
   }
 }
 </script>
