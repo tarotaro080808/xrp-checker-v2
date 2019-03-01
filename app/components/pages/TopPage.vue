@@ -309,8 +309,6 @@ export default {
     ...mapActions('rippled', ['connectRippleClient'])
   },
   async mounted() {
-    this.initBigChart(0)
-
     console.time('start')
     const walletAddresses = [
       {
@@ -334,6 +332,8 @@ export default {
     ]
     await this.connectRippleClient({ walletAddresses })
     console.timeEnd('start')
+
+    this.initBigChart(0)
   }
 }
 </script>
