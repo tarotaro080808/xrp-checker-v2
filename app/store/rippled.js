@@ -11,25 +11,31 @@ export const state = () => ({
 })
 
 export const getters = {
-  isRippledWsLoading(state) {
-    return state.isRippledWsLoading
-  },
-  yourWallet(state) {
-    return state.yourWallet
-  },
-  totalBalance(state) {
-    return state.totalBalance
-  }
+  isRippledWsLoading: state => state.isRippledWsLoading,
+  yourWallet: state => state.yourWallet,
+  totalBalance: state => state.totalBalance
 }
 
 export const actions = {
   async connectRippleClient({ commit }, { walletAddresses }) {
     const walletData = []
+
+    // Compatibility
+    // localStorage name: walletAddress
+    // ["rxxxx","rxxxxx","1111.11","1111.1111","300"]
+
     try {
       commit(types.IS_RIPPLED_WS_LOADING, true)
       const connection = await new RippledWsClient('wss://s2.ripple.com')
-      for (let i = 0; i < walletAddresses.length; i++) {
-        const wallet = walletAddresses[i]
+
+      // backward compatibility
+      const lsVer = utils.compatibilityCheck()
+      const lsWalletAddresses =
+        lsVer === 2
+          ? utils.getLocalStorageWallet()
+          : utils.compatibilityCorrection({ connection })
+      for (let i = 0; i < lsWalletAddresses.length; i++) {
+        const wallet = lsWalletAddresses[i]
         if (wallet.isAddress) {
           const p = []
           p.push(
