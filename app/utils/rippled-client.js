@@ -71,7 +71,6 @@ export async function compatibilityCorrection({ connection }) {
       })
     }
   }
-  console.log(newWalletAddress)
   localStorage.setItem('walletAddress', JSON.stringify(newWalletAddress))
   localStorage.setItem('localStorageVer', JSON.stringify(2))
   return newWalletAddress
